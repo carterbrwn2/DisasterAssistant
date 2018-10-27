@@ -1,37 +1,38 @@
-# Author: Carter Brown
+# Author: Carter Brown, Alyssa Langhals
+
 
 class Assistant:
 
     messages = {
-        "tornado-warning":"""A tornado warning means that a tornado has been spotted
+        "tornado-warning": """A tornado warning means that a tornado has been spotted
 or radar indicates the presence of a thunderstorm circulation
 that could result in a tornado. Please take immediate action:
 
-*If you are outside, immediately seek shelter in a sturdy building.
-                            
-*If you are inside, move to an interior room on the lowest floor.
-                            
-*Avoid windows.
-                            
-*If no shelter is available, lie down in a low-lying area.
-                            
-*Protect yourself from flying debris.""",
+    *If you are outside, immediately seek shelter in a sturdy building.
 
-        "tornado-watch":"""A tornado watch means conditions are favorable for tornadoes 
+    *If you are inside, move to an interior room on the lowest floor.
+
+    *Avoid windows.
+
+    *If no shelter is available, lie down in a low-lying area.
+
+    *Protect yourself from flying debris.""",
+
+        "tornado-watch": """A tornado watch means conditions are favorable for tornadoes 
 and severe thunderstorms in and close to the watch area. 
 
 Persons in these areas should be on the lookout for threatening weather conditions
 
 Listen for later statements and possible warnings.""",
 
-        "tsunami-watch":"""An earthquake has occurred that has the potential to generate a tsunami,
+        "tsunami-watch": """An earthquake has occurred that has the potential to generate a tsunami,
 this threat to the watch area is still being evaluated.
 
 The watch may be upgraded to an advisory or a warning, or may be cancelled.
 
-*Stay alert for more information.
+    *Stay alert for more information.
 
-*Be prepared to act.""",
+    *Be prepared to act.""",
 
         "tsunami-advisory": """A tsunami advisory is issued when a tsunami with the 
 potential to generate strong currents or waves dangerous to those 
@@ -43,23 +44,23 @@ The tsunami may appear as water moving rapidly out to sea,
 a gentle rising tide like flood with no breaking wave,
 as a series of breaking waves, or a frothy wall of water.
 
-        If you are in a tsunami advisory area:
+If you are in a tsunami advisory area:
 
- * Move out of the water, off the beach, and away from
-   harbors, marinas, breakwaters, bays and inlets.
+     * Move out of the water, off the beach, and away from
+       harbors, marinas, breakwaters, bays and inlets.
 
- * Be alert to and follow instructions from your local
-   emergency officials because they may have more detailed or
-   specific information for your location.
+     * Be alert to and follow instructions from your local
+       emergency officials because they may have more detailed or
+       specific information for your location.
 
- * If you feel a strong earthquake or extended ground rolling
-   take immediate protective actions such as moving inland
-   and/or uphill preferably by foot.
+     * If you feel a strong earthquake or extended ground rolling
+       take immediate protective actions such as moving inland
+       and/or uphill preferably by foot.
 
- * Do not go to the shore to observe the tsunami.
+     * Do not go to the shore to observe the tsunami.
 
- * Do not return to the coast until local emergency officials
-   indicate it is safe to do so.""",
+     * Do not return to the coast until local emergency officials
+       indicate it is safe to do so.""",
 
         "tsunami-warning": """A tsunami warning is issued when a tsunami with the potential 
 to generate widespread inundation is imminent, expected, or occurring.
@@ -69,7 +70,7 @@ URGENT ACTION  SHOULD BE TAKEN TO PROTECT LIVES AND PROPERTY.
 *Move to high ground or inland
 
 *Stay tuned for further information""",
-        
+
         "heatwave":"""""",
         "wildfire":""""""
 
@@ -79,8 +80,28 @@ URGENT ACTION  SHOULD BE TAKEN TO PROTECT LIVES AND PROPERTY.
         "tornado-warning": False
     }
 
+    msg_history = []
+
     def __init__(self):
         self.notify("Assistant started")
 
-    def notify(self, msg):
-        print(msg)
+    def notify(self, msg, msg_key=None):
+        if msg_key is None:
+            print(msg)
+        else:
+            print(self.messages[msg_key])
+
+    def decode(self, msg):
+        self.update_history(msg)
+        msg_arr = msg.split("&&")
+        command, arg, value = msg_arr[0:3]
+        if command == "notify":
+            self.notify(None, arg)
+        elif command == "setflag":
+            self.flags[arg] = value
+            print(arg+" flag set to", value)
+        else:
+            self.notify(command, None)
+
+    def update_history(self, msg):
+        self.msg_history.append(msg)
