@@ -1,7 +1,7 @@
 # Author: Carter Brown, Alyssa Langhals
 
-from threading import Thread
-from time import sleep
+from threading import *
+
 
 class Assistant:
 
@@ -15,7 +15,8 @@ class Assistant:
 
     messages = {
         "tornado-warning": (
-                """A tornado warning means that a tornado has been spotted
+                """
+A tornado warning means that a tornado has been spotted
 or radar indicates the presence of a thunderstorm circulation
 that could result in a tornado. Please take immediate action:
 
@@ -27,34 +28,40 @@ that could result in a tornado. Please take immediate action:
 
     *If no shelter is available, lie down in a low-lying area.
 
-    *Protect yourself from flying debris.""",
-                "The tornado warning is no longer in effect."),
+    *Protect yourself from flying debris.
+""",
+                "\nThe tornado warning is no longer in effect.\n"),
 
 
         "tornado-watch": (
-            """A tornado watch means conditions are favorable for tornadoes 
+            """
+A tornado watch means conditions are favorable for tornadoes 
 and severe thunderstorms in and close to the watch area. 
 
 Persons in these areas should be on the lookout for threatening weather conditions
 
-Listen for later statements and possible warnings.""",
-            "The tornado watch is no longer in effect."),
+Listen for later statements and possible warnings.
+""",
+            "\nThe tornado watch is no longer in effect.\n"),
 
 
         "tsunami-watch": (
-            """An earthquake has occurred that has the potential to generate a tsunami,
+            """
+An earthquake has occurred that has the potential to generate a tsunami,
 this threat to the watch area is still being evaluated.
 
 The watch may be upgraded to an advisory or a warning, or may be cancelled.
 
     *Stay alert for more information.
 
-    *Be prepared to act.""",
-            "The tsunami watch is no longer in effect."),
+    *Be prepared to act.
+""",
+            "\nThe tsunami watch is no longer in effect.\n"),
 
 
         "tsunami-advisory": (
-            """A tsunami advisory is issued when a tsunami with the 
+            """
+A tsunami advisory is issued when a tsunami with the 
 potential to generate strong currents or waves dangerous to those 
 in or very near the water is imminent, expected, or occurring.
 
@@ -80,20 +87,23 @@ If you are in a tsunami advisory area:
      * Do not go to the shore to observe the tsunami.
 
      * Do not return to the coast until local emergency officials
-       indicate it is safe to do so.""",
-            "The tsunami advisory is no longer in effect"),
+       indicate it is safe to do so.
+""",
+            "\nThe tsunami advisory is no longer in effect\n"),
 
 
         "tsunami-warning": (
-            """A tsunami warning is issued when a tsunami with the potential 
+            """
+A tsunami warning is issued when a tsunami with the potential 
 to generate widespread inundation is imminent, expected, or occurring.
 
 URGENT ACTION  SHOULD BE TAKEN TO PROTECT LIVES AND PROPERTY. 
 
 *Move to high ground or inland
 
-*Stay tuned for further information""",
-            "The tsunami warning is no longer in effect"),
+*Stay tuned for further information
+""",
+            "\nThe tsunami warning is no longer in effect\n"),
 
 
         "heatwave": (
@@ -138,11 +148,13 @@ URGENT ACTION  SHOULD BE TAKEN TO PROTECT LIVES AND PROPERTY.
 
         """
 
-        self.notify("Assistant started")
+        self.send_message("Assistant started")
 
         # Start the auto updater
-        update_thread = Thread(target=self.update_client_on_status)
-        update_thread.start()
+        self.update_flag = True
+        self.stop_ev = Event()
+        self.update_thread = Thread(target=self.update_client_on_status)
+        self.update_thread.start()
 
     def decode(self, msg):
         """
@@ -164,7 +176,7 @@ URGENT ACTION  SHOULD BE TAKEN TO PROTECT LIVES AND PROPERTY.
         # Perform action based on message
         if command == "notify":
             # Set disaster flag
-            self.flags[arg] = value
+            self.flags[arg] = self.convert_value(value)
             # Notify client of new information
             self.notify(arg)
         elif command == "send":
@@ -217,8 +229,34 @@ URGENT ACTION  SHOULD BE TAKEN TO PROTECT LIVES AND PROPERTY.
 
         :return: None
         """
-        while 1:
-            for label, flag in self.flags:
+        while self.update_flag:
+            for label, flag in self.flags.items():
                 if flag:
-                    self.notify(self.messages[label][0])
-            sleep(600)
+                    self.send_message(self.messages[label][0])
+            self.stop_ev.wait(15)
+        print("Done")
+
+    def assistant_exit(self):
+        """
+        Unsets the update_flag, terminating the update loop
+
+        :return: None
+        """
+        self.update_flag = False
+        self.stop_ev.set()
+
+    def convert_value(self, value):
+        """
+        Converts passed String to a bool
+
+        :param value: String to convert to a bool
+        :return: True or False based on value
+        """
+        s = value.lower()
+        if s == "true":
+            return True
+        elif s == "false":
+            return False
+        else:
+            print("Error: invalid value argument")
+            return False

@@ -15,3 +15,5 @@ while 1:
 
     # Perform action based on message
     agent.decode(msg)
+
+agent.assistant_exit()
