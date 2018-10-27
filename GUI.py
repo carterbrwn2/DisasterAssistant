@@ -25,7 +25,7 @@ class GUI:
     def close_window(self):
         self.root.quit()
 
-    def new_alert(message):
+    def new_alert(self, message):
         # create a new pop-up window
         top = Toplevel()
         top.title("NEW ALERT")
