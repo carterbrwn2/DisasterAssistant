@@ -1,6 +1,7 @@
 # Author: Carter Brown, Alyssa Langhals
 
 from threading import *
+import datetime
 
 
 class Assistant:
@@ -182,6 +183,9 @@ URGENT ACTION  SHOULD BE TAKEN TO PROTECT LIVES AND PROPERTY.
         elif command == "send":
             # Send message to client
             self.send_message(arg)
+        elif command == "history":
+            # Print message history
+            self.print_history()
 
     def notify(self, msg_key):
         """
@@ -221,7 +225,18 @@ URGENT ACTION  SHOULD BE TAKEN TO PROTECT LIVES AND PROPERTY.
         :param msg: Message from the console
         :return: None
         """
-        self.msg_history.append(msg)
+        dt = str(datetime.datetime.now())
+        new_msg = dt + ": " + msg
+        self.msg_history.append(new_msg)
+
+    def print_history(self):
+        """
+        Prints the history of messages
+
+        :return: None
+        """
+        for msg in self.msg_history:
+            print(msg, "\n")
 
     def update_client_on_status(self):
         """
