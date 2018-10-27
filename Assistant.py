@@ -202,6 +202,7 @@ URGENT ACTION  SHOULD BE TAKEN TO PROTECT LIVES AND PROPERTY.
         index = 0 if self.flags[msg_key] else 1
 
         self.update_client_window(self.messages[msg_key][index])
+        self.window.GUI.new_alert(time.ctime()+"\n"+self.messages[msg_key][index])
 
     def send_message(self, msg):
         """
@@ -211,6 +212,7 @@ URGENT ACTION  SHOULD BE TAKEN TO PROTECT LIVES AND PROPERTY.
         :return: None
         """
         self.update_client_window(msg)
+        self.window.GUI.new_alert(time.ctime()+"\n"+msg)
 
     def update_client_window(self, msg):
         """
