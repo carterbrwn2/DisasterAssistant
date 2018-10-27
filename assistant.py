@@ -1,2 +1,0 @@
-# Author: Carter Brown
-
