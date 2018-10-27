@@ -1,25 +1,34 @@
-import tkinter
+from tkinter import *
 import tkinter.scrolledtext
+
 
 
 class GUI:
     displayed_message = ""
-    scrolledtext = None
+    scrolled_text = None
 
     def __init__(self):
       self = tkinter.Tk()
       self.title("ACTIVE ALERTS")
       self.wm_iconbitmap('assets/warning_im6_icon.ico')
 
-      GUI.scrolledtext = tkinter.scrolledtext.ScrolledText(self)
-      GUI.scrolledtext.pack(fill="both", expand=True)
-      GUI.scrolledtext.insert(tkinter.INSERT, GUI.displayed_message)
+      GUI.scrolled_text = tkinter.scrolledtext.ScrolledText(self)
+      GUI.scrolled_text.pack(fill="both", expand=True)
+      GUI.scrolled_text.insert(tkinter.INSERT, GUI.displayed_message)
 
       self.mainloop()
 
     def update_display(message):
         GUI.displayed_message = message + "\n"
-        GUI.scrolledtext.insert(tkinter.INSERT, GUI.displayed_message)
+        GUI.scrolled_text.insert(tkinter.INSERT, GUI.displayed_message)
+
+        #create a new pop-up window
+        top = Toplevel()
+        top.title("NEW ALERT")
+        top.wm_iconbitmap('assets/urgent_icon.ico')
+        scrolled_text = tkinter.scrolledtext.ScrolledText(top)
+        scrolled_text.pack(fill="both", expand=True)
+        scrolled_text.insert(tkinter.INSERT, message)
 
 
 def create_gui():
