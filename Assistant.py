@@ -62,7 +62,14 @@ as a series of breaking waves, or a frothy wall of water.
    indicate it is safe to do so.""",
 
         "tsunami-warning": """A tsunami warning is issued when a tsunami with the potential 
-to generate widespread inundation is imminent, expected, or occurring.""",
+to generate widespread inundation is imminent, expected, or occurring.
+
+URGENT ACTION  SHOULD BE TAKEN TO PROTECT LIVES AND PROPERTY. 
+
+*Move to high ground or inland
+
+*Stay tuned for further information""",
+        
         "heatwave":"""""",
         "wildfire":""""""
 
