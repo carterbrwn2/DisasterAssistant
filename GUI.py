@@ -4,23 +4,21 @@ import tkinter.scrolledtext
 
 class GUI:
     displayed_message = ""
-    scrolledtext = None
 
     def __init__(self):
-      self = tkinter.Tk()
-      self.title("ACTIVE ALERTS")
-      self.wm_iconbitmap('assets/warning_im6_icon.ico')
+        self.root = tkinter.Tk()
+        self.root.attributes("-fullscreen", True)
+        self.root.title("ACTIVE ALERTS")
+        self.root.wm_iconbitmap('assets/warning_im6_icon.ico')
+        self.root.scrolledtext = tkinter.scrolledtext.ScrolledText(self.root)
+        self.root.scrolledtext.pack(fill="both", expand=True)
 
-      GUI.scrolledtext = tkinter.scrolledtext.ScrolledText(self)
-      GUI.scrolledtext.pack(fill="both", expand=True)
-      GUI.scrolledtext.insert(tkinter.INSERT, GUI.displayed_message)
+    def update_display(self, message):
+        self.displayed_message = message + "\n"
+        self.root.scrolledtext.insert("0.0", self.displayed_message)
 
-      self.mainloop()
+    def open_window(self):
+        self.root.mainloop()
 
-    def update_display(message):
-        GUI.displayed_message = message + "\n"
-        GUI.scrolledtext.insert(tkinter.INSERT, GUI.displayed_message)
-
-
-def create_gui():
-    window = GUI()
+    def close_window(self):
+        self.root.quit()
