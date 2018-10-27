@@ -6,7 +6,7 @@ import GUI
 
 def main():
     # The disaster assistant
-  sagent = Assistant()
+  agent = Assistant()
 
   while 1:
       #Get the message
