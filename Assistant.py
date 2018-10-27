@@ -16,9 +16,8 @@ class Assistant:
 
     messages = {
         "tornado-warning": (
-                """
-A tornado warning means that a tornado has been spotted
-or radar indicates the presence of a thunderstorm circulation
+                """A Tornado Warning is in effect: A tornado warning means that a 
+tornado has been spotted or radar indicates the presence of a thunderstorm circulation
 that could result in a tornado. Please take immediate action:
 
     *If you are outside, immediately seek shelter in a sturdy building.
@@ -30,40 +29,40 @@ that could result in a tornado. Please take immediate action:
     *If no shelter is available, lie down in a low-lying area.
 
     *Protect yourself from flying debris.
+    
 """,
-                "\nThe tornado warning is no longer in effect.\n"),
+                "The tornado warning is no longer in effect.\n\n"),
 
 
         "tornado-watch": (
-            """
-A tornado watch means conditions are favorable for tornadoes 
-and severe thunderstorms in and close to the watch area. 
+            """A Tornado Watch is in effect: A tornado watch means conditions are 
+favorable for tornadoes and severe thunderstorms in and close to the watch area. 
 
 Persons in these areas should be on the lookout for threatening weather conditions
 
 Listen for later statements and possible warnings.
+
 """,
-            "\nThe tornado watch is no longer in effect.\n"),
+            "The tornado watch is no longer in effect.\n\n"),
 
 
         "tsunami-watch": (
-            """
-An earthquake has occurred that has the potential to generate a tsunami,
-this threat to the watch area is still being evaluated.
+            """A Tsunami Watch is in effect: An earthquake has occurred that has the 
+potential to generate a tsunami, this threat to the watch area is still being evaluated.
 
 The watch may be upgraded to an advisory or a warning, or may be cancelled.
 
     *Stay alert for more information.
 
     *Be prepared to act.
+    
 """,
-            "\nThe tsunami watch is no longer in effect.\n"),
+            "The tsunami watch is no longer in effect.\n\n"),
 
 
         "tsunami-advisory": (
-            """
-A tsunami advisory is issued when a tsunami with the 
-potential to generate strong currents or waves dangerous to those 
+            """A Tsunami Advisory is in effect: A tsunami advisory is issued 
+when a tsunami with the potential to generate strong currents or waves dangerous to those 
 in or very near the water is imminent, expected, or occurring.
 
 An advisory may be upgraded to a warning or cancelled.
@@ -89,22 +88,24 @@ If you are in a tsunami advisory area:
 
      * Do not return to the coast until local emergency officials
        indicate it is safe to do so.
+
 """,
-            "\nThe tsunami advisory is no longer in effect\n"),
+            "The tsunami advisory is no longer in effect\n\n"),
 
 
         "tsunami-warning": (
-            """
-A tsunami warning is issued when a tsunami with the potential 
-to generate widespread inundation is imminent, expected, or occurring.
+            """A Tsunami Warning is in effect: A tsunami warning is issued when a 
+tsunami with the potential to generate widespread inundation is imminent, 
+expected, or occurring.
 
 URGENT ACTION  SHOULD BE TAKEN TO PROTECT LIVES AND PROPERTY. 
 
 *Move to high ground or inland
 
 *Stay tuned for further information
+
 """,
-            "\nThe tsunami warning is no longer in effect\n"),
+            "The tsunami warning is no longer in effect\n\n"),
 
 
         "heatwave": (
@@ -221,7 +222,7 @@ URGENT ACTION  SHOULD BE TAKEN TO PROTECT LIVES AND PROPERTY.
         :param msg: String - The string to send to the client window
         :return: None
         """
-        self.window.GUI.update_display(msg + "\n")
+        self.window.update_display(msg + "\n")
 
     def update_history(self, msg):
         """
@@ -257,7 +258,6 @@ URGENT ACTION  SHOULD BE TAKEN TO PROTECT LIVES AND PROPERTY.
                     self.send_message(self.messages[label][0])
             self.stop_ev.wait(15)
         # Signal end of update loop
-        self.update_client_window("Done")
         print("Done")
 
     def assistant_exit(self):
