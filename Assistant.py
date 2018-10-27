@@ -1,7 +1,7 @@
 # Author: Carter Brown, Alyssa Langhals
 
 from threading import *
-import datetime
+import time
 
 
 class Assistant:
@@ -142,14 +142,17 @@ URGENT ACTION  SHOULD BE TAKEN TO PROTECT LIVES AND PROPERTY.
     # CLASS METHODS
     # ------------------------------------------------------------------------------
 
-    def __init__(self):
+    def __init__(self, gui):
         """Constructor for Assistant
 
         Starts the client updater
 
         """
 
+        self.window = gui
+
         self.send_message("Assistant started")
+        print("Assistant started")
 
         # Start the auto updater
         self.update_flag = True
@@ -216,7 +219,7 @@ URGENT ACTION  SHOULD BE TAKEN TO PROTECT LIVES AND PROPERTY.
         :param msg: String - The string to send to the client window
         :return: None
         """
-        print(msg)
+        self.window.GUI.update_display(msg + "\n")
 
     def update_history(self, msg):
         """
@@ -226,8 +229,7 @@ URGENT ACTION  SHOULD BE TAKEN TO PROTECT LIVES AND PROPERTY.
         :return: None
         """
         # Add timestamp to message
-        dt = str(datetime.datetime.now())
-        new_msg = dt + ": " + msg
+        new_msg = time.ctime() + ": " + msg
 
         self.msg_history.append(new_msg)
 
@@ -253,6 +255,7 @@ URGENT ACTION  SHOULD BE TAKEN TO PROTECT LIVES AND PROPERTY.
                     self.send_message(self.messages[label][0])
             self.stop_ev.wait(15)
         # Signal end of update loop
+        self.update_client_window("Done")
         print("Done")
 
     def assistant_exit(self):
@@ -261,6 +264,7 @@ URGENT ACTION  SHOULD BE TAKEN TO PROTECT LIVES AND PROPERTY.
 
         :return: None
         """
+        self.update_client_window("Terminating assistant...")
         self.update_flag = False
         self.stop_ev.set()
 

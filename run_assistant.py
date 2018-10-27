@@ -2,32 +2,28 @@
 
 from Assistant import Assistant
 from threading import Thread
+from time import sleep
 import GUI
+
 
 def main():
     # The disaster assistant
-  agent = Assistant()
+    sleep(1)
+    agent = Assistant(GUI)
 
-  while 1:
-      #Get the message
-      msg = input()
-      if msg == "exit":
-          print("Exiting...")
-          break
-      else:
-          GUI.GUI.update_Display(msg + "\n")
-    # Perform action based on message
-      agent.decode(msg)
+    while 1:
+        # Get the message
+        msg = input()
+        if msg == "exit":
+            print("Exiting...")
+            break
+        # Perform action based on message
+        agent.decode(msg)
 
-  agent.assistant_exit()
+    agent.assistant_exit()
 
-#start threads
-threadGUI = Thread(target = GUI.create_GUI)
-threadMain = Thread(target = main)
-threadMain.start()
-threadGUI.start()
 
-threadMain.join()
-print("ClosingMAIN")
-threadGUI.join()
-print("ClosingGUI")
+thread_main = Thread(target=main)
+thread_main.start()
+
+GUI.create_gui()
