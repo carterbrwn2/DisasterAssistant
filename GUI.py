@@ -20,6 +20,8 @@ class GUI:
         self.root.wm_iconbitmap('assets/warning_im6_icon.ico')
         self.root.scrolledtext = tkinter.scrolledtext.ScrolledText(self.root)
         self.root.scrolledtext.pack(fill="both", expand=True)
+        self.root.protocol('WM_DELETE_WINDOW', donothing)
+        self.root.resizable(0, 0)
 
     def update_display(self, message):
         """
@@ -46,3 +48,16 @@ class GUI:
         :return: None
         """
         self.root.quit()
+
+    def new_alert(self, message):
+        # Create a new pop-up window
+        top = tkinter.Toplevel()
+        top.title("NEW ALERT")
+        top.wm_iconbitmap('assets/urgent_icon.ico')
+        scrolled_text = tkinter.scrolledtext.ScrolledText(top)
+        scrolled_text.pack(fill="both", expand=True)
+        scrolled_text.insert(tkinter.INSERT, message)
+
+
+def donothing():
+    pass
