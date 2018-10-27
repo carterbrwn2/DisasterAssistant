@@ -225,8 +225,10 @@ URGENT ACTION  SHOULD BE TAKEN TO PROTECT LIVES AND PROPERTY.
         :param msg: Message from the console
         :return: None
         """
+        # Add timestamp to message
         dt = str(datetime.datetime.now())
         new_msg = dt + ": " + msg
+
         self.msg_history.append(new_msg)
 
     def print_history(self):
@@ -246,9 +248,11 @@ URGENT ACTION  SHOULD BE TAKEN TO PROTECT LIVES AND PROPERTY.
         """
         while self.update_flag:
             for label, flag in self.flags.items():
+                # Send warning if flag is set
                 if flag:
                     self.send_message(self.messages[label][0])
             self.stop_ev.wait(15)
+        # Signal end of update loop
         print("Done")
 
     def assistant_exit(self):
